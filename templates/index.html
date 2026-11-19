@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quickstart Launcher</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body {
+      background: radial-gradient(circle at top left, #1e293b, #0f172a);
+      color: #f8fafc; height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; overflow: hidden;
+    }
+    header { width: 85%; max-width: 1100px; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: baseline; }
+    h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em; }
+    .hint { color: #94a3b8; font-size: 0.95rem; }
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem; width: 85%; max-width: 1100px;
+    }
+    .tile {
+      background: rgba(255, 255, 255, 0.06); border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px; padding: 2rem; text-align: left; color: inherit; cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .tile:hover, .tile:focus {
+      outline: none; transform: translateY(-6px) scale(1.02);
+      background: rgba(56, 189, 248, 0.15); border-color: #38bdf8;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+    .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .name { font-size: 1.35rem; font-weight: 600; margin-bottom: 0.35rem; }
+    .desc { font-size: 0.9rem; color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Quickstart</h1>
+    <div class="hint">Use Arrow Keys + Enter • Alt+F4 to return</div>
+  </header>
+  <main class="grid" id="grid">
+    {% for app in apps %}
+    <button class="tile" data-id="{{ app.id }}" onclick="launchApp('{{ app.id }}')">
+      <div class="icon">{{ app.icon }}</div>
+      <div class="name">{{ app.name }}</div>
+      <div class="desc">{{ app.desc }}</div>
+    </button>
+    {% endfor %}
+  </main>
+
+  <script>
+    const tiles = Array.from(document.querySelectorAll('.tile'));
+    let idx = 0;
+    if (tiles.length) tiles[0].focus();
+
+    function launchApp(id) {
+      fetch(`/launch/${id}`, { method: 'POST' });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (!tiles.length) return;
+      const cols = Math.floor(document.getElementById('grid').offsetWidth / tiles[0].offsetWidth) || 1;
+      if (e.key === 'ArrowRight') idx = (idx + 1) % tiles.length;
+      else if (e.key === 'ArrowLeft') idx = (idx - 1 + tiles.length) % tiles.length;
+      else if (e.key === 'ArrowDown') idx = Math.min(idx + cols, tiles.length - 1);
+      else if (e.key === 'ArrowUp') idx = Math.max(idx - cols, 0);
+      else return;
+      e.preventDefault();
+      tiles[idx].focus();
+    });
+  </script>
+</body>
+</html>
