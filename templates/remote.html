@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Pi Remote</title>
+  <style>
+    body { background: #0f172a; color: #fff; font-family: sans-serif; margin: 0; padding: 16px; display: flex; flex-direction: column; height: 95vh; gap: 12px; }
+    #pad { flex: 1; background: #1e293b; border: 2px solid #334155; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #64748b; touch-action: none; }
+    .row { display: flex; gap: 8px; }
+    button, input { padding: 14px; border-radius: 10px; border: none; font-size: 16px; }
+    button { background: #38bdf8; color: #0f172a; font-weight: bold; flex: 1; }
+    input { flex: 3; background: #1e293b; color: #fff; border: 1px solid #334155; }
+  </style>
+</head>
+<body>
+  <div id="pad">Swipe to Move • Tap to Click</div>
+  <div class="row">
+    <button onclick="send({action:'key', code:105})">◀</button>
+    <button onclick="send({action:'key', code:103})">▲</button>
+    <button onclick="send({action:'key', code:108})">▼</button>
+    <button onclick="send({action:'key', code:106})">▶</button>
+  </div>
+  <div class="row">
+    <button onclick="send({action:'key', code:28})">Enter</button>
+    <button onclick="send({action:'key', code:1})">Esc</button>
+    <button onclick="send({action:'key', code:14})">⌫</button>
+  </div>
+  <form class="row" onsubmit="event.preventDefault(); send({action:'type', text:txt.value}); txt.value='';">
+    <input id="txt" placeholder="Type text to send...">
+    <button type="submit">Send</button>
+  </form>
+
+  <script>
+    const pad = document.getElementById('pad');
+    let lastX = null, lastY = null, moved = false;
+    function send(payload) {
+      fetch('/api/input', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+    }
+    pad.addEventListener('touchstart', e => { lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; moved = false; });
+    pad.addEventListener('touchmove', e => {
+      const dx = (e.touches[0].clientX - lastX) * 1.8;
+      const dy = (e.touches[0].clientY - lastY) * 1.8;
+      lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+      if (Math.abs(dx) > 1 || Math.abs(dy) > 1) { moved = true; send({action: 'move', dx, dy}); }
+    });
+    pad.addEventListener('touchend', () => { if (!moved) send({action: 'click'}); });
+  </script>
+</body>
+</html>
