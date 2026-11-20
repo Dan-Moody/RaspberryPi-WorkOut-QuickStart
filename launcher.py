@@ -76,7 +76,7 @@ def launch(app_id):
         cmd = [
             "chromium", "--kiosk", "--password-store=basic",
             "--ozone-platform=wayland", "--noerrdialogs",
-            "--disable-infobars", "--disable-gpu:,
+            "--disable-infobars", "--disable-gpu",
             f"--user-data-dir={profile_dir}",
             item["target"]
         ]
