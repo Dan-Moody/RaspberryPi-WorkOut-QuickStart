@@ -76,11 +76,10 @@ def launch(app_id):
         cmd = [
             "chromium", "--kiosk", "--password-store=basic",
             "--ozone-platform=wayland", "--noerrdialogs",
-            "--disable-infobars", "--enable-gpu-rasterization",
-            "--enable-zero-copy", f"--user-data-dir={profile_dir}",
+            "--disable-infobars", "--use-gl=angle",
+            "--use-angle=gles-egl", f"--user-data-dir={profile_dir}",
             item["target"]
         ]
-        # Add blocker to spotify so it loads faster on the RPi 3
         if item["id"] == "spotify":
             ext_path = os.path.expanduser("~/quickstart/spotify-lite-ext")
             cmd.insert(-1, f"--load-extension={ext_path}")
