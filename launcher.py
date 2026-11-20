@@ -45,7 +45,7 @@ APPS = [
     {"id": "sworkit", "name": "Sworkit", "desc": "Workout videos", "icon": "▶", "type": "web", "target": "https://app.sworkit.com/login"},
     {"id": "jellyfin", "name": "JellyFin", "desc": "Local media server", "icon": "🎬", "type": "web", "target": "http://192.168.1.138:8096/web/#/home.html"},
     # Add a dedicated profile path just for Spotify
-    {"id": "spotify", "name": "Spotify", "desc": "Music player", "icon": "🎵", "type": "web", "target": "https://spotify.com", "profile": "os.path.expanduser("~/.config/spotify-kiosk")"},
+    {"id": "spotify", "name": "Spotify", "desc": "Music player", "icon": "🎵", "type": "web", "target": "https://open.spotify.com", "profile": os.path.expanduser("~/.config/spotify-kiosk")},
     {"id": "terminal", "name": "Terminal", "desc": "System shell", "icon": "💻", "type": "cmd", "target": "lxterminal"},
 ]
 
