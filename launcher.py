@@ -88,7 +88,7 @@ def remote():
 
 @app.route("/api/close", methods=["POST"])
 def close_app():
-    # Send Alt + F4 via evdev to close the active foreground window
+    # 1. Send Alt + F4 via evdev to close the active foreground window (web app or terminal)
     ui.write(e.EV_KEY, e.KEY_LEFTALT, 1)
     ui.syn()
     time.sleep(0.02)
@@ -96,6 +96,24 @@ def close_app():
     time.sleep(0.02)
     ui.write(e.EV_KEY, e.KEY_LEFTALT, 0)
     ui.syn()
+
+    # Wait briefly for the foreground window to close
+    time.sleep(0.3)
+
+    # 2. Check if the main Quickstart launcher window is still open; if not, reopen it
+    check = subprocess.run(["pgrep", "-f", "chromium.*localhost:5000"], stdout=subprocess.DEVNULL)
+    if check.returncode != 0:
+        env = os.environ.copy()
+        env.setdefault("XDG_RUNTIME_DIR", f"/run/user/{os.getuid()}")
+        env.setdefault("WAYLAND_DISPLAY", "wayland-0")
+
+        subprocess.Popen([
+            "chromium", "--kiosk", "--password-store=basic",
+            "--ozone-platform=wayland", "--noerrdialogs",
+            "--disable-infobars", "--check-for-update-interval=31536000",
+            "http://localhost:5000"
+        ], env=env)
+
     return jsonify({"status": "ok"})
 
 @app.route("/api/input", methods=["POST"])
