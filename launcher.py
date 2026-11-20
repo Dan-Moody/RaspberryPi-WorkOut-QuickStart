@@ -44,7 +44,8 @@ CHAR_MAP = {
 APPS = [
     {"id": "sworkit", "name": "Sworkit", "desc": "Workout videos", "icon": "▶", "type": "web", "target": "https://app.sworkit.com/login"},
     {"id": "jellyfin", "name": "JellyFin", "desc": "Local media server", "icon": "🎬", "type": "web", "target": "http://192.168.1.138:8096/web/#/home.html"},
-    {"id": "spotify", "name": "Spotify", "desc": "DJ Fresh", "icon": "📻", "type": "web", "target": "https://open.spotify.com/"},
+    # Add a dedicated profile path just for Spotify
+    {"id": "spotify", "name": "Spotify", "desc": "Music player", "icon": "🎵", "type": "web", "target": "https://spotify.com", "profile": "os.path.expanduser("~/.config/spotify-kiosk")"},
     {"id": "terminal", "name": "Terminal", "desc": "System shell", "icon": "💻", "type": "cmd", "target": "lxterminal"},
 ]
 
@@ -71,12 +72,15 @@ def launch(app_id):
     env.setdefault("WAYLAND_DISPLAY", "wayland-0")
 
     if item["type"] == "web":
-        subprocess.Popen([
+        profile_dir = os.path.expanduser(item.get("profile", "/tmp/kiosk-profile"))
+        cmd = [
             "chromium", "--kiosk", "--password-store=basic",
             "--ozone-platform=wayland", "--noerrdialogs",
-            "--disable-infobars", "--user-data-dir=/tmp/kiosk-profile",
+            "--disable-infobars", "--enable-gpu-rasterization",
+            "--enable-zero-copy", f"--user-data-dir={profile_dir}",
             item["target"]
-        ], env=env)
+        ]
+        subprocess.Popen(cmd, env=env)
     elif item["type"] == "cmd":
         subprocess.Popen(item["target"].split(), env=env)
 
