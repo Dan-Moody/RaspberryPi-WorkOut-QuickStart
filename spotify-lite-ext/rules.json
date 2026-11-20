@@ -25,5 +25,23 @@
       "urlFilter": "||sentry.io^",
       "resourceTypes": ["xmlhttprequest", "script"]
     }
+  },
+  {
+    "id": 4,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||i.scdn.co^",
+      "resourceTypes": ["image"]
+    }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||mosaic.scdn.co^",
+      "resourceTypes": ["image"]
+    }
   }
 ]
