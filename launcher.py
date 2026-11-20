@@ -41,8 +41,8 @@ CHAR_MAP = {
 }
 
 APPS = [
-    {"id": "youtube", "name": "YouTube", "desc": "Watch videos", "icon": "▶", "type": "web", "target": "https://youtube.com"},
-    {"id": "plex", "name": "Plex", "desc": "Local media server", "icon": "🎬", "type": "web", "target": "https://plex.tv"},
+    {"id": "sworkit", "name": "Sworkit", "desc": "Workout videos", "icon": "▶", "type": "web", "target": "https://app.sworkit.com/login"},
+    {"id": "jellyfin", "name": "JellyFin", "desc": "Local media server", "icon": "🎬", "type": "web", "target": "http://192.168.1.138:8096/web/#/home.html"},
     {"id": "home", "name": "Home Assistant", "desc": "Smart home dashboard", "icon": "🏠", "type": "web", "target": "http://homeassistant.local:8123"},
     {"id": "terminal", "name": "Terminal", "desc": "System shell", "icon": "💻", "type": "cmd", "target": "lxterminal"},
 ]
