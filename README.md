@@ -4,6 +4,9 @@ A Kiosk UI that allows a TV to be used for mainly workout apps on the web withou
 ## Kill current running instance via SSH:
 pkill -f launcher.py && python3 ~/RaspberryPi-WorkOut-QuickStart/launcher.py &
 
+## Setting up the configs
+Run the "Setup.sh" script as administrator which should setup all the raspberry pi configs needed in order to run this project. 
+One the script is run reboot the pi to start the program. Note that rebooting will make it harder to modify things later.
 
 # raspberry Pi Setup
 # Boot Directly into the UI Without Showing the Desktop
