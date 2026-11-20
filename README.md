@@ -8,6 +8,17 @@ pkill -f launcher.py && python3 ~/RaspberryPi-WorkOut-QuickStart/launcher.py &
 Run the "Setup.sh" script as administrator which should setup all the raspberry pi configs needed in order to run this project. 
 One the script is run reboot the pi to start the program. Note that rebooting will make it harder to modify things later.
 
+## Returning to the menu page
+Note: Currently this applies to Sworkit, JellyFin, and Spotify
+Since the pages are opened as new pages pressing alt + f4 will close the current page. This happens on the browser level and it is possible to close the menu page as it is just a browser page
+
+There is a home button on the "/remote" route that will take you back from the main tile page
+
+
+
+
+
+
 # raspberry Pi Setup
 # Boot Directly into the UI Without Showing the Desktop
 
