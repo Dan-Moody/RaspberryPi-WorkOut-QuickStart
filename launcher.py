@@ -86,6 +86,15 @@ def launch(app_id):
 def remote():
     return render_template("remote.html")
 
+@app.route("/api/close", methods=["POST"])
+def close_app():
+    # Sends Alt + F4 via evdev to close the active foreground window
+    ui.write(e.EV_KEY, e.KEY_LEFTALT, 1)
+    tap_key(e.KEY_F4)
+    ui.write(e.EV_KEY, e.KEY_LEFTALT, 0)
+    ui.syn()
+    return jsonify({"status": "ok"})
+
 @app.route("/api/input", methods=["POST"])
 def remote_input():
     data = request.json
