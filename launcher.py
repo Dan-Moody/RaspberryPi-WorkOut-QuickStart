@@ -1,5 +1,6 @@
 import getpass
 import socket
+import os
 import subprocess
 import time
 from flask import Flask, render_template, request, jsonify
@@ -63,15 +64,22 @@ def launch(app_id):
     item = next((a for a in APPS if a["id"] == app_id), None)
     if not item:
         return jsonify({"status": "error"}), 404
+
+    # Ensure child GUI apps attach to the active labwc Wayland session
+    env = os.environ.copy()
+    env.setdefault("XDG_RUNTIME_DIR", f"/run/user/{os.getuid()}")
+    env.setdefault("WAYLAND_DISPLAY", "wayland-0")
+
     if item["type"] == "web":
         subprocess.Popen([
             "chromium", "--kiosk", "--password-store=basic",
-            "--noerrdialogs", "--disable-infobars",
-            "--user-data-dir=/tmp/kiosk-profile",
+            "--ozone-platform=wayland", "--noerrdialogs",
+            "--disable-infobars", "--user-data-dir=/tmp/kiosk-profile",
             item["target"]
-        ])
+        ], env=env)
     elif item["type"] == "cmd":
-        subprocess.Popen(item["target"].split())
+        subprocess.Popen(item["target"].split(), env=env)
+
     return jsonify({"status": "ok"})
 
 @app.route("/remote")
