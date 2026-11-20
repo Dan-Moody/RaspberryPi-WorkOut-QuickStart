@@ -44,7 +44,7 @@ CHAR_MAP = {
 APPS = [
     {"id": "sworkit", "name": "Sworkit", "desc": "Workout videos", "icon": "▶", "type": "web", "target": "https://app.sworkit.com/login"},
     {"id": "jellyfin", "name": "JellyFin", "desc": "Local media server", "icon": "🎬", "type": "web", "target": "http://192.168.1.138:8096/web/#/home.html"},
-    {"id": "home", "name": "Home Assistant", "desc": "Smart home dashboard", "icon": "🏠", "type": "web", "target": "http://homeassistant.local:8123"},
+    {"id": "spotify", "name": "Spotify", "desc": "DJ Fresh", "icon": "📻", "type": "web", "target": "https://open.spotify.com/"},
     {"id": "terminal", "name": "Terminal", "desc": "System shell", "icon": "💻", "type": "cmd", "target": "lxterminal"},
 ]
 
