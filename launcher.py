@@ -65,8 +65,9 @@ def launch(app_id):
         return jsonify({"status": "error"}), 404
     if item["type"] == "web":
         subprocess.Popen([
-            "chromium", "--kiosk", "--noerrdialogs",
-            "--disable-infobars", "--user-data-dir=/tmp/kiosk-profile",
+            "chromium", "--kiosk", "--password-store=basic",
+            "--noerrdialogs", "--disable-infobars",
+            "--user-data-dir=/tmp/kiosk-profile",
             item["target"]
         ])
     elif item["type"] == "cmd":
