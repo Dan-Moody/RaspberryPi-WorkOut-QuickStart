@@ -1,9 +1,24 @@
+import getpass
+import socket
 import subprocess
 import time
 from flask import Flask, render_template, request, jsonify
 from evdev import UInput, ecodes as e
 
 app = Flask(__name__)
+
+# Gets the local IP on the network so that it is easier to SSH without giving it a static port
+def get_ssh_info():
+    user = getpass.getuser()
+    ip = "127.0.0.1"
+    try:
+        # Connects to a dummy external address (no packets sent) to find the active LAN IP
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.connect(("8.8.8.8", 80))
+            ip = s.getsockname()[0]
+    except Exception:
+        pass
+    return f"ssh {user}@{ip}"
 
 # Create a virtual mouse & keyboard device via Linux uinput
 CAPABILITIES = {
@@ -41,7 +56,7 @@ def tap_key(code):
 
 @app.route("/")
 def index():
-    return render_template("index.html", apps=APPS)
+    return render_template("index.html", apps=APPS, ssh_info=get_ssh_info())
 
 @app.route("/launch/<app_id>", methods=["POST"])
 def launch(app_id):
