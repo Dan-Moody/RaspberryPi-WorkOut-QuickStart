@@ -24,7 +24,6 @@ sudo udevadm trigger
 echo "=== 3. Creating labwc autostart configuration ==="
 mkdir -p "$AUTOSTART_DIR"
 
-# Back up existing autostart if one already exists
 if [ -f "$AUTOSTART_FILE" ]; then
     cp "$AUTOSTART_FILE" "${AUTOSTART_FILE}.bak.$(date +%s)"
     echo "Backed up existing autostart file."
@@ -53,11 +52,20 @@ if [ ! -f "$AUTOSTART_DIR/rc.xml" ] && [ -f "/etc/xdg/labwc/rc.xml" ]; then
     cp /etc/xdg/labwc/rc.xml "$AUTOSTART_DIR/rc.xml"
 fi
 
-echo "=== 5. Enabling SSH and Desktop Autologin ==="
+echo "=== 5. Enabling SSH, Desktop Autologin, and disabling screen blanking ==="
 sudo systemctl enable --now ssh
 sudo raspi-config nonint do_boot_behaviour B4
+sudo raspi-config nonint do_blanking 1
 
 echo ""
-echo "Setup complete! Rebooting in 5 seconds (Ctrl+C to cancel)..."
-sleep 5
-sudo reboot
+echo "=== Setup Complete! ==="
+read -r -p "Would you like to reboot now? [y/N]: " response
+case "$response" in
+    [yY]|[yY][eE][sS])
+        echo "Rebooting..."
+        sudo reboot
+        ;;
+    *)
+        echo "Reboot skipped. Run 'sudo reboot' later to apply all changes."
+        ;;
+esac
