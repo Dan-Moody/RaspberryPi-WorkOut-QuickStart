@@ -76,8 +76,8 @@ def launch(app_id):
         cmd = [
             "chromium", "--kiosk", "--password-store=basic",
             "--ozone-platform=wayland", "--noerrdialogs",
-            "--disable-infobars", "--use-gl=angle",
-            "--use-angle=gles-egl", f"--user-data-dir={profile_dir}",
+            "--disable-infobars", "--disable-gpu:,
+            f"--user-data-dir={profile_dir}",
             item["target"]
         ]
         if item["id"] == "spotify":
