@@ -88,9 +88,12 @@ def remote():
 
 @app.route("/api/close", methods=["POST"])
 def close_app():
-    # Sends Alt + F4 via evdev to close the active foreground window
+    # Send Alt + F4 via evdev to close the active foreground window
     ui.write(e.EV_KEY, e.KEY_LEFTALT, 1)
+    ui.syn()
+    time.sleep(0.02)
     tap_key(e.KEY_F4)
+    time.sleep(0.02)
     ui.write(e.EV_KEY, e.KEY_LEFTALT, 0)
     ui.syn()
     return jsonify({"status": "ok"})
