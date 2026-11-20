@@ -2,8 +2,8 @@
 A Kiosk UI that allows a TV to be used for mainly workout apps on the web without having to connect a full laptop.  This is mainly to launch sworkout app and allow mobile phone control locally
 
 
-#raspberry Pi Setup
-**Boot Directly into the UI Without Showing the Desktop
+# raspberry Pi Setup
+# Boot Directly into the UI Without Showing the Desktop
 
 On Raspberry Pi OS Trixie, labwc launches the taskbar (wf-panel-pi) and desktop wallpaper (pcmanfm --desktop) via /etc/xdg/labwc/autostart. You can hide those desktop elements and launch your quickstart UI cleanly at boot.
 1. Enable Desktop Auto-Login & Disable Screen Blanking:
